@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Check if an image path is provided
+if [ -z "$1" ]; then
+  echo "Usage: matugen-theme /path/to/image"
+  exit 1
+fi
+
+WALL="$1"
+ROFI_IMG="$HOME/.config/rofi/images/current.png"
+HYPR_IMG="$HOME/.config/hypr/current_wallpaper.png"
+# 1. Run Matugen to generate colors from the image
+matugen image "$WALL"
+
+# 2. Copy or symlink the image for Rofi
+ln -sf "$WALL" "$ROFI_IMG"
+ln -sf "$WALL" "$HYPR_IMG"
+# 3. (Optional) Reload Rofi if it’s open
+systemctl --user reload swaync
